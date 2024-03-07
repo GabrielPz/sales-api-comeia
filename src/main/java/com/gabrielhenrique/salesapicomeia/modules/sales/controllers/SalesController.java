@@ -1,5 +1,4 @@
-package com.gabrielhenrique.salesapicomeia;
-
+package com.gabrielhenrique.salesapicomeia.modules.sales.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
