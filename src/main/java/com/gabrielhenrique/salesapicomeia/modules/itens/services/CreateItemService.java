@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemFoundException;
-import com.gabrielhenrique.salesapicomeia.modules.itens.ItensEntity;
-import com.gabrielhenrique.salesapicomeia.modules.itens.ItensRepository;
+import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
+import com.gabrielhenrique.salesapicomeia.modules.itens.repository.ItensRepository;
 
 @Service
 public class CreateItemService {
