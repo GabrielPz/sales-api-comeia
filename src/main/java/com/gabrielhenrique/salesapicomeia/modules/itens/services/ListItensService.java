@@ -17,10 +17,8 @@ public class ListItensService {
     private ItensRepository itensRepository;
 
     public List<ItensEntity> listAll(){
-
         List<ItensEntity> itensList = new ArrayList<>();
         itensRepository.findAll().forEach(itensList::add);
-
         return itensList;
     }
 

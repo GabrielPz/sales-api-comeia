@@ -12,12 +12,10 @@ import org.hibernate.validator.constraints.Length;
 import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 
