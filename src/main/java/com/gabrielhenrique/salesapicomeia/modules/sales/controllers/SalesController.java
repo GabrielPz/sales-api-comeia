@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gabrielhenrique.salesapicomeia.modules.sales.SalesEntity;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/sale")
 public class SalesController {
@@ -18,7 +20,7 @@ public class SalesController {
     }
 
     @PostMapping("/create")
-    public void create(@RequestBody SalesEntity salesEntity){
+    public void create(@Valid @RequestBody SalesEntity salesEntity){
         System.out.println("Venda");
         System.out.println(salesEntity);
     }
