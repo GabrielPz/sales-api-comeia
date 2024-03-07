@@ -36,9 +36,6 @@ public class SalesEntity {
     @Length(min = 10, max = 200, message = "A descrição precis conter entre 10 e 200 carcateres")
     private String saleDescription;
 
-    // @NotNull(message = "O campo id não pode ser nulo.")
-    // private String itemsSold;
-
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private List<ItensEntity> itens;
 

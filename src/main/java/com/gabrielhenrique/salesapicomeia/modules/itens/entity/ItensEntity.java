@@ -1,5 +1,6 @@
 package com.gabrielhenrique.salesapicomeia.modules.itens.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -13,7 +14,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -24,16 +26,16 @@ public class ItensEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotNull(message = "Insira um nome para o item")
+    @NotBlank(message = "Insira um nome para o item")
     private String name;
 
-    @NotNull(message = "Insira um valor para o item")
-    private Double price;
+    @Digits(integer=6, fraction=2, message = "O preço deve ser um valor numérico com até 6 dígitos inteiros e até 2 casas decimais.")
+    private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name = "sale_id")
+    @JoinColumn(name = "sale_id", nullable = true)
     private SalesEntity sale;
-    
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 }
