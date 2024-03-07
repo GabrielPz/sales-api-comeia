@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gabrielhenrique.salesapicomeia.exceptions.ItemFoundException;
 import com.gabrielhenrique.salesapicomeia.modules.itens.ItensEntity;
 import com.gabrielhenrique.salesapicomeia.modules.itens.ItensRepository;
 
@@ -22,6 +23,7 @@ public class ItensController {
 
     @PostMapping("/create")
     public ItensEntity create(@Valid @RequestBody ItensEntity itensEntity){
+        this.itensRepository.findByName(itensEntity.getName()).ifPresent((item) -> {throw new ItemFoundException();});
         return this.itensRepository.save(itensEntity);
     }
 }
