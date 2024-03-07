@@ -7,12 +7,14 @@ import java.util.UUID;
 
 import org.hibernate.validator.constraints.Length;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 
 // import jakarta.validation.constraints.Size;
 // import jakarta.validation.constraints.Email;
 
 @Data
+@Entity(name = "sales")
 public class SalesEntity {
     private UUID id;
 
