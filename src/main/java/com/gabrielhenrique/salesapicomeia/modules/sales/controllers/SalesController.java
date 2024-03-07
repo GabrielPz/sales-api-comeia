@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gabrielhenrique.salesapicomeia.exceptions.SaleFoundException;
 import com.gabrielhenrique.salesapicomeia.modules.sales.SalesEntity;
 import com.gabrielhenrique.salesapicomeia.modules.sales.SalesRepository;
 
@@ -23,6 +24,7 @@ public class SalesController {
 
     @PostMapping("/create")
     public SalesEntity create(@Valid @RequestBody SalesEntity salesEntity){
+        this.salesRepository.findBySaleDescription(salesEntity.getSaleDescription()).ifPresent((sale) -> {throw new SaleFoundException();});
         return this.salesRepository.save(salesEntity);
     }
 }
