@@ -2,12 +2,16 @@ package com.gabrielhenrique.salesapicomeia.modules.sales;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 // import jakarta.validation.constraints.Size;
@@ -16,6 +20,9 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @Entity(name = "sales")
 public class SalesEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotNull(message = "O campo id não pode ser nulo.")
@@ -31,6 +38,6 @@ public class SalesEntity {
     @NotNull(message = "O campo id não pode ser nulo.")
     private Double itemPrice;
 
-    @NotNull(message = "O campo id não pode ser nulo.")
-    private Date saleDate;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }
