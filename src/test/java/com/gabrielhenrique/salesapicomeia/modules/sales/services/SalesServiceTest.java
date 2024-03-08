@@ -2,6 +2,7 @@ package com.gabrielhenrique.salesapicomeia.modules.sales.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
@@ -21,6 +22,8 @@ import com.gabrielhenrique.salesapicomeia.exceptions.ItemNotFoundException;
 import com.gabrielhenrique.salesapicomeia.exceptions.SaleFoundException;
 import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
 import com.gabrielhenrique.salesapicomeia.modules.itens.repository.ItensRepository;
+import com.gabrielhenrique.salesapicomeia.modules.sales.dto.SalesCreateDTO;
+import com.gabrielhenrique.salesapicomeia.modules.sales.dto.SalesUpdateDTO;
 import com.gabrielhenrique.salesapicomeia.modules.sales.entity.SalesEntity;
 import com.gabrielhenrique.salesapicomeia.modules.sales.repository.SalesRepository;
 
@@ -40,6 +43,8 @@ public class SalesServiceTest {
     private ItensEntity item1, item2;
     private SalesEntity salesEntity;
     private UUID saleId;
+    private SalesCreateDTO salesCreateDTO;
+    private SalesUpdateDTO salesUpdateDTO;
 
     @BeforeEach
     void setUp() {
@@ -60,6 +65,14 @@ public class SalesServiceTest {
         salesEntity = new SalesEntity();
         salesEntity.setSaleDescription("Sale Description");
         salesEntity.setItemIds(Arrays.asList(itemId1, itemId2));
+
+        salesCreateDTO = new SalesCreateDTO();
+        salesCreateDTO.setSaleDescription("Sale Description");
+        salesCreateDTO.setItemIds(Arrays.asList(itemId1, itemId2));
+
+        salesUpdateDTO = new SalesUpdateDTO();
+        salesUpdateDTO.setSaleDescription("Updated Description");
+        salesUpdateDTO.setItemIds(Arrays.asList(itemId1, itemId2));
     }
 
     @Test
@@ -70,7 +83,7 @@ public class SalesServiceTest {
         when(itensRepository.findById(itemId2)).thenReturn(Optional.of(item2));
         when(salesRepository.save(any(SalesEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        SalesEntity createdSale = salesServices.create(salesEntity);
+        SalesEntity createdSale = salesServices.create(salesCreateDTO);
 
         assertNotNull(createdSale);
         assertEquals(2, createdSale.getItemQuantity());
@@ -82,7 +95,7 @@ public class SalesServiceTest {
     public void throwSaleFoundExceptionIfDescriptionExists() {
         when(salesRepository.findBySaleDescription(anyString())).thenReturn(Optional.of(salesEntity));
 
-        assertThrows(SaleFoundException.class, () -> salesServices.create(salesEntity));
+        assertThrows(SaleFoundException.class, () -> salesServices.create(salesCreateDTO));
     }
 
     @Test
@@ -96,7 +109,7 @@ public class SalesServiceTest {
         SalesEntity updatedSale = salesEntity;
         updatedSale.setSaleDescription("Updated Description");
 
-        SalesEntity result = salesServices.update(saleId, updatedSale);
+        SalesEntity result = salesServices.update(saleId, salesUpdateDTO);
 
         assertNotNull(result);
         assertEquals("Updated Description", result.getSaleDescription());
@@ -108,7 +121,7 @@ public class SalesServiceTest {
     public void throwItemNotFoundExceptionWhenUpdateIfSaleDoesNotExist() {
         when(salesRepository.findById(saleId)).thenReturn(Optional.empty());
 
-        assertThrows(ItemNotFoundException.class, () -> salesServices.update(saleId, new SalesEntity()));
+        assertThrows(ItemNotFoundException.class, () -> salesServices.update(saleId, salesUpdateDTO));
     }
 
     @Test

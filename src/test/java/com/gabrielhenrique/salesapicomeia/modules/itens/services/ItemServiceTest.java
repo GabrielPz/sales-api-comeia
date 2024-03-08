@@ -1,5 +1,6 @@
 package com.gabrielhenrique.salesapicomeia.modules.itens.services;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,11 +12,14 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemFoundException;
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemNotFoundException;
+import com.gabrielhenrique.salesapicomeia.modules.itens.dto.ItemCreateDTO;
+import com.gabrielhenrique.salesapicomeia.modules.itens.dto.ItemUpdateDTO;
 import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
 import com.gabrielhenrique.salesapicomeia.modules.itens.repository.ItensRepository;
 
@@ -27,6 +31,22 @@ public class ItemServiceTest {
 
     @Mock
     private ItensRepository itensRepository;
+
+    private ItemCreateDTO itemCreateDTO;
+    private ItemUpdateDTO itemUpdateDTO;
+    private UUID itemId;
+    @BeforeEach
+    void setUp() {
+        itemId = UUID.randomUUID();
+        itemCreateDTO = new ItemCreateDTO();
+        itemCreateDTO.setName("ITEM TESTE");
+        itemCreateDTO.setPrice(BigDecimal.valueOf(200.00));
+
+        itemUpdateDTO = new ItemUpdateDTO();
+        itemUpdateDTO.setName("ITEM TESTE");
+        itemUpdateDTO.setPrice(BigDecimal.valueOf(200.00));
+
+    }
 
     @Test
     @DisplayName("Should create item successfully")
@@ -62,38 +82,32 @@ public class ItemServiceTest {
     @Test
     @DisplayName("Should update item successfully")
     public void updateItemSuccess() {
-        UUID itemId = UUID.randomUUID();
         ItensEntity existingItem = new ItensEntity();
         existingItem.setId(itemId);
         existingItem.setName("Existing Item");
         existingItem.setPrice(BigDecimal.valueOf(100));
 
         ItensEntity updatedItem = new ItensEntity();
-        updatedItem.setName("Updated Item");
-        updatedItem.setPrice(BigDecimal.valueOf(150));
+        updatedItem.setName(itemUpdateDTO.getName());
+        updatedItem.setPrice(itemUpdateDTO.getPrice());
 
         when(itensRepository.findById(itemId)).thenReturn(Optional.of(existingItem));
         when(itensRepository.save(any(ItensEntity.class))).thenReturn(updatedItem);
 
-        ItensEntity result = itemService.update(itemId, updatedItem);
+        ItensEntity result = itemService.update(itemId, itemUpdateDTO);
 
         assertNotNull(result);
-        assertEquals(updatedItem.getName(), result.getName());
-        assertEquals(updatedItem.getPrice(), result.getPrice());
-        verify(itensRepository).save(existingItem);
+        assertEquals(itemUpdateDTO.getName(), result.getName());
+        assertEquals(itemUpdateDTO.getPrice(), result.getPrice());
+        verify(itensRepository).save(any(ItensEntity.class));
     }
 
     @Test
     @DisplayName("Should throw exception when updating non-existent item")
     public void updateNonExistentItem() {
-        UUID itemId = UUID.randomUUID();
-        ItensEntity updatedItem = new ItensEntity();
-        updatedItem.setName("Updated Item");
-        updatedItem.setPrice(BigDecimal.valueOf(150));
-
         when(itensRepository.findById(itemId)).thenReturn(Optional.empty());
 
-        assertThrows(ItemNotFoundException.class, () -> itemService.update(itemId, updatedItem));
+        assertThrows(ItemNotFoundException.class, () -> itemService.update(itemId, itemUpdateDTO));
 
         verify(itensRepository, never()).save(any(ItensEntity.class));
     }
