@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gabrielhenrique.salesapicomeia.exceptions.SaleFoundException;
-import com.gabrielhenrique.salesapicomeia.modules.sales.SalesEntity;
 import com.gabrielhenrique.salesapicomeia.modules.sales.SalesRepository;
+import com.gabrielhenrique.salesapicomeia.modules.sales.entity.SalesEntity;
 
 @Service
 public class CreateSaleService {

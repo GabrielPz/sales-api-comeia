@@ -1,4 +1,4 @@
-package com.gabrielhenrique.salesapicomeia.modules.sales.controllers;
+package com.gabrielhenrique.salesapicomeia.modules.sales.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gabrielhenrique.salesapicomeia.modules.sales.SalesEntity;
+import com.gabrielhenrique.salesapicomeia.modules.sales.entity.SalesEntity;
 import com.gabrielhenrique.salesapicomeia.modules.sales.services.CreateSaleService;
 
 import jakarta.validation.Valid;

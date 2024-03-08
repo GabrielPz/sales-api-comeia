@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.gabrielhenrique.salesapicomeia.modules.sales.SalesEntity;
+import com.gabrielhenrique.salesapicomeia.modules.sales.entity.SalesEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

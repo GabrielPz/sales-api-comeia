@@ -1,4 +1,4 @@
-package com.gabrielhenrique.salesapicomeia.modules.sales;
+package com.gabrielhenrique.salesapicomeia.modules.sales.entity;
 
 import lombok.Data;
 
