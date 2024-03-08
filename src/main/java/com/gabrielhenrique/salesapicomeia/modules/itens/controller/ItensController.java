@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/item")
+@Tag(name = "Itens", description = "Operações relacionadas a itens")
 public class ItensController {
     
     @Autowired
@@ -48,7 +49,6 @@ public class ItensController {
 
 
     //Criação do item
-    @Tag(name = "Item", description = "Criar item")
     @Operation(
         summary = "Criação de um item no banco de dados", 
         description = "Cria um Item")
@@ -75,7 +75,6 @@ public class ItensController {
 
 
     //Atualização de item
-    @Tag(name = "Item", description = "Atualizar item")
     @Operation(summary = "Atualização de um item no banco de dados", description = "Atualiza um Item")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Item atualizado com sucesso", content = {
@@ -98,7 +97,6 @@ public class ItensController {
 
 
     //Deletar Item
-    @Tag(name = "Item", description = "Deletar item")
     @Operation(summary = "Deletar um item do banco de dados", description = "Deleta um Item pelo ID")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Item deletado com sucesso", content = @Content(schema = @Schema(type = "string"))),
@@ -120,7 +118,6 @@ public class ItensController {
 
 
     //Listar Todos os itens
-    @Tag(name = "Item", description = "Listar todos os itens")
     @Operation(summary = "Listar todos os itens", description = "Retorna uma lista de todos os itens cadastrados no banco de dados")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Itens listados com sucesso", content = {
@@ -144,7 +141,6 @@ public class ItensController {
 
 
     //Listar Item por id
-    @Tag(name = "Item", description = "Buscar item por ID")
     @Operation(summary = "Buscar um item pelo ID", description = "Retorna o item correspondente ao ID fornecido")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Item encontrado com sucesso", content = {

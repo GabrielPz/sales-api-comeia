@@ -11,6 +11,8 @@ import com.gabrielhenrique.salesapicomeia.exceptions.ItemNotFoundException;
 import com.gabrielhenrique.salesapicomeia.exceptions.SaleFoundException;
 import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
 import com.gabrielhenrique.salesapicomeia.modules.itens.repository.ItensRepository;
+import com.gabrielhenrique.salesapicomeia.modules.sales.dto.SalesCreateDTO;
+import com.gabrielhenrique.salesapicomeia.modules.sales.dto.SalesUpdateDTO;
 import com.gabrielhenrique.salesapicomeia.modules.sales.entity.SalesEntity;
 import com.gabrielhenrique.salesapicomeia.modules.sales.repository.SalesRepository;
 
@@ -24,38 +26,34 @@ public class SalesServices {
     private ItensRepository itensRepository;
 
 
-    public SalesEntity create(SalesEntity salesEntity) {
-        this.salesRepository.findBySaleDescription(salesEntity.getSaleDescription()).ifPresent((sale) -> {throw new SaleFoundException();});
+    public SalesEntity create(SalesCreateDTO dto) {
+        this.salesRepository.findBySaleDescription(dto.getSaleDescription()).ifPresent((sale) -> {throw new SaleFoundException();});
+        SalesEntity salesEntity = new SalesEntity();
 
-        List<ItensEntity> items = salesEntity.getItemIds().stream()
+        List<ItensEntity> items = dto.getItemIds().stream()
             .map(id -> itensRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Item not found: " + id)))
             .collect(Collectors.toList());
+
         salesEntity.setItemsAndCalculateSalePrice(items);
-        salesEntity.setItemQuantity(salesEntity.getItemIds().size());
+        salesEntity.setItemQuantity(dto.getItemIds().size());
+        salesEntity.setSaleDescription(dto.getSaleDescription());
         return salesRepository.save(salesEntity);
     }
 
-    public SalesEntity update(UUID id, SalesEntity updatedSale) {
-        SalesEntity existingSale = salesRepository.findById(id)
-            .orElseThrow(() -> new ItemNotFoundException("Venda não encontrada: " + id));
+    public SalesEntity update(UUID id, SalesUpdateDTO dto) {
+        SalesEntity existingSale = salesRepository.findById(id).orElseThrow(() -> new ItemNotFoundException("Sale not found: " + id));
 
-        if (updatedSale.getSaleDescription() != null) {
-            existingSale.setSaleDescription(updatedSale.getSaleDescription());
+        if(dto.getSaleDescription() != null && !dto.getSaleDescription().isEmpty()) {
+            existingSale.setSaleDescription(dto.getSaleDescription());
         }
-        
-        // Assuming updatedSale contains updated item IDs or we directly use newItemIds parameter
-        if (updatedSale.getItemIds() != null && !updatedSale.getItemIds().isEmpty()) {
-            List<ItensEntity> items = updatedSale.getItemIds().stream()
-                .map(itemId -> itensRepository.findById(itemId)
-                    .orElseThrow(() -> new RuntimeException("Item not found: " + itemId)))
+
+        if(dto.getItemIds() != null && !dto.getItemIds().isEmpty()) {
+            List<ItensEntity> items = dto.getItemIds().stream()
+                .map(itemId -> itensRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException("Item not found: " + itemId)))
                 .collect(Collectors.toList());
-            existingSale.setItemQuantity(updatedSale.getItemIds().size());
             existingSale.setItemsAndCalculateSalePrice(items);
-        }
-
-        if (updatedSale.getItemQuantity() != null) {
-            existingSale.setItemQuantity(updatedSale.getItemQuantity());
+            existingSale.setItemQuantity(items.size());
         }
 
         return salesRepository.save(existingSale);

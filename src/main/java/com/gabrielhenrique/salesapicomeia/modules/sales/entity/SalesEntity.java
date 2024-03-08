@@ -37,8 +37,8 @@ public class SalesEntity {
     @Transient  // This field is not persisted in the database
     private List<UUID> itemIds;
     
-    @NotBlank(message = "O campo id não pode ser nulo.")
-    @Length(min = 10, max = 200, message = "A descrição precis conter entre 10 e 200 carcateres")
+    @NotBlank(message = "O campo de descrição não pode estar vazio")
+    @Length(min = 10, max = 200, message = "A descrição precisa conter entre 10 e 200 carcateres")
     private String saleDescription;
 
     private Integer itemQuantity;

@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Autenticação", description = "Realizar autenticação para usar a api")
 public class AuthController {
 
     private final AuthService authService;
@@ -25,8 +26,7 @@ public class AuthController {
 
     @SuppressWarnings("rawtypes")
     @PostMapping("/login")
-    @Tag(name = "Autenticação", description = "Realizar autenticação para usar a api")
-    @Operation(summary = "Faz o cahamdo ao keycloak", description = "Realiza a autenticação e retorna o token")
+    @Operation(summary = "Realiza Autenticação", description = "Realiza a autenticação e retorna o token")
     public ResponseEntity<Map> login(@RequestBody AuthRequest authRequest) {
         return authService.authenticate(authRequest.getUsername(), authRequest.getPassword());
     }
