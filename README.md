@@ -4,6 +4,9 @@
     Para que o sistema de autenticação funcione é necessário ter o keycloak instalado e funcional,
     o mesmo deve estar alocado na porta 8080.
 
+    Com o docker instalado, rode o seguinte comando:
+        docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.1 start-dev
+        
     Rodar o seguinte comando:
         docker-compose up -d
 

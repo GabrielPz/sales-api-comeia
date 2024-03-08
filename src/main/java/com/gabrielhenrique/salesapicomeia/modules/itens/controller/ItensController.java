@@ -10,11 +10,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gabrielhenrique.salesapicomeia.exceptions.ItemFoundException;
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemNotFoundException;
 import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
 import com.gabrielhenrique.salesapicomeia.modules.itens.services.ItemService;
 import com.gabrielhenrique.salesapicomeia.modules.itens.services.ListItensService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +44,16 @@ public class ItensController {
     @Autowired
     private ListItensService listItensService;
 
+    @Tag(name = "Item", description = "Criar item")
+    @Operation(summary = "Criação de um item no banco de dados", description = "Cria um Item")
     @PostMapping("/create")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Item criado com sucesso", content = {
+            @Content(schema = @Schema(implementation = ItensEntity.class))
+        }),
+        @ApiResponse(responseCode = "400", description = "Item já existe", content = @Content(schema = @Schema(type = "string")))
+    })
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> create(@Valid @RequestBody ItensEntity itensEntity){
         try{
             var result = this.itemService.create(itensEntity);

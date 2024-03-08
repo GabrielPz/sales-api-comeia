@@ -14,6 +14,8 @@ public class SecurityConfig {
     private static final String[] SWAGGER_LIST = {
         "/swagger-ui/**",
         "/v3/api-docs/**",
+        "/authenticate",
+        "/auth/login",
         "swagger-resources/**"
     };
 
