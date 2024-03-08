@@ -7,14 +7,11 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.gabrielhenrique.salesapicomeia.modules.sales.entity.SalesEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -32,10 +29,6 @@ public class ItensEntity {
 
     @Digits(integer=6, fraction=2, message = "O preço deve ser um valor numérico com até 6 dígitos inteiros e até 2 casas decimais.")
     private BigDecimal price;
-
-    @ManyToOne
-    @JoinColumn(name = "sale_id", nullable = true)
-    private SalesEntity sale;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

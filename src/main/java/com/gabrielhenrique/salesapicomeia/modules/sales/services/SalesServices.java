@@ -1,12 +1,16 @@
 package com.gabrielhenrique.salesapicomeia.modules.sales.services;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemNotFoundException;
 import com.gabrielhenrique.salesapicomeia.exceptions.SaleFoundException;
+import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
+import com.gabrielhenrique.salesapicomeia.modules.itens.repository.ItensRepository;
 import com.gabrielhenrique.salesapicomeia.modules.sales.entity.SalesEntity;
 import com.gabrielhenrique.salesapicomeia.modules.sales.repository.SalesRepository;
 
@@ -16,9 +20,18 @@ public class SalesServices {
     @Autowired
     private SalesRepository salesRepository;
 
-    public SalesEntity create(SalesEntity salesEntity){
+    @Autowired
+    private ItensRepository itensRepository;
+
+
+    public SalesEntity create(SalesEntity salesEntity) {
+        List<ItensEntity> items = salesEntity.getItemIds().stream()
+            .map(id -> itensRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Item not found: " + id)))
+            .collect(Collectors.toList());
+        salesEntity.setItemsAndCalculateSalePrice(items); // Set item names and calculate sale price
         this.salesRepository.findBySaleDescription(salesEntity.getSaleDescription()).ifPresent((sale) -> {throw new SaleFoundException();});
-        return this.salesRepository.save(salesEntity);
+        return salesRepository.save(salesEntity);
     }
 
     public SalesEntity update(UUID id, SalesEntity updatedSale) {
@@ -28,14 +41,14 @@ public class SalesServices {
         if (updatedSale.getSaleDescription() != null) {
             existingSale.setSaleDescription(updatedSale.getSaleDescription());
         }
-        if (updatedSale.getItens() != null && !updatedSale.getItens().isEmpty()) {
-            existingSale.setItens(updatedSale.getItens());
+        if (updatedSale.getItemNames() != null && !updatedSale.getItemNames().isEmpty()) {
+            existingSale.setItemNames(updatedSale.getItemNames());
         }
         if (updatedSale.getItemQuantity() != null) {
             existingSale.setItemQuantity(updatedSale.getItemQuantity());
         }
-        if (updatedSale.getItemPrice() != null) {
-            existingSale.setItemPrice(updatedSale.getItemPrice());
+        if (updatedSale.getSalePrice() != null) {
+            existingSale.setSalePrice(updatedSale.getSalePrice());
         }
 
         return salesRepository.save(existingSale);
