@@ -1,23 +1,44 @@
-# Execução
-    mvn spring-boot:run
-# Informações
-    Para que o sistema de autenticação funcione é necessário ter o keycloak instalado e funcional,
-    o mesmo deve estar alocado na porta 8080.
 
-    Com o docker instalado, rode o seguinte comando:
-        docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.1 start-dev
-        
-    Rodar o seguinte comando:
-        docker-compose up -d
+# Sales API
 
-    Para verificar pode suar o comando:
-        docker ps
+## Descrição
+Este projeto é uma API REST construída com Spring Boot, utilizando JPA para persistência de dados em um banco de dados PostgreSQL. O sistema de autenticação é baseado no Keycloak. Para testes, foram utilizados JUnit e Mockito. A aplicação também está configurada para execução em containers Docker.
 
-# Implementações
-    Autenticação com o keycloak rodando e funcional
+## Tecnologias Utilizadas
+- Spring Boot
+- JPA (Java Persistence API)
+- Docker
+- Keycloak (Autenticação)
+- PostgreSQL (Banco de dados)
+- JUnit (Testes)
+- Swagger (Documentação da API)
 
-# Possiveis implementações
-    Talvez seja melhor tirar o item price da tabela de vendas e colocar numa entity de item
-    e ae para calcular o valor da venda basta multiplicar a quantidade de itens vendidos através da FK com o item
+## Pré-requisitos
+- Docker e Docker Compose
+- Java 17
+- Maven
+- Keycloak
 
-    ADICIONAR VALIDAÇÃO PARA QUANDO O ARRAY DE ITENS NA VENDA ESTIVER VAZIO
+## Configuração e Execução
+
+### Keycloak
+É necessário ter o Keycloak instalado e configurado. Uma maneira simples de executar o Keycloak é através do Docker. Execute o seguinte comando:
+```
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.1 start-dev
+```
+### Docker
+É necessário ter o Docker instalado. Para rodar execute o seguinte comando:
+```
+docker-compose up -d
+```
+
+Para verificar as instâncias do Docker pode user o seguinte comando:
+```
+docker ps
+```
+
+### Execução
+Para realizar o run da api, execute o seguinte comando:
+```
+mvn spring-boot:run
+```
