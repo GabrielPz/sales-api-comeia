@@ -36,26 +36,6 @@ public class SalesServices {
         return salesRepository.save(salesEntity);
     }
 
-    public SalesEntity updateasda(UUID id, SalesEntity updatedSale) {
-        SalesEntity existingSale = salesRepository.findById(id)
-            .orElseThrow(() -> new ItemNotFoundException("Venda não encontrada: " + id));
-
-        if (updatedSale.getSaleDescription() != null) {
-            existingSale.setSaleDescription(updatedSale.getSaleDescription());
-        }
-        if (updatedSale.getItemNames() != null && !updatedSale.getItemNames().isEmpty()) {
-            existingSale.setItemNames(updatedSale.getItemNames());
-        }
-        if (updatedSale.getItemQuantity() != null) {
-            existingSale.setItemQuantity(updatedSale.getItemQuantity());
-        }
-        if (updatedSale.getSalePrice() != null) {
-            existingSale.setSalePrice(updatedSale.getSalePrice());
-        }
-
-        return salesRepository.save(existingSale);
-    }
-
     public SalesEntity update(UUID id, SalesEntity updatedSale) {
         SalesEntity existingSale = salesRepository.findById(id)
             .orElseThrow(() -> new ItemNotFoundException("Venda não encontrada: " + id));
