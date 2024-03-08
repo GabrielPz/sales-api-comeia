@@ -16,3 +16,5 @@
 # Possiveis implementações
     Talvez seja melhor tirar o item price da tabela de vendas e colocar numa entity de item
     e ae para calcular o valor da venda basta multiplicar a quantidade de itens vendidos através da FK com o item
+
+    ADICIONAR VALIDAÇÃO PARA QUANDO O ARRAY DE ITENS NA VENDA ESTIVER VAZIO

@@ -25,16 +25,18 @@ public class SalesServices {
 
 
     public SalesEntity create(SalesEntity salesEntity) {
+        this.salesRepository.findBySaleDescription(salesEntity.getSaleDescription()).ifPresent((sale) -> {throw new SaleFoundException();});
+
         List<ItensEntity> items = salesEntity.getItemIds().stream()
             .map(id -> itensRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Item not found: " + id)))
             .collect(Collectors.toList());
-        salesEntity.setItemsAndCalculateSalePrice(items); // Set item names and calculate sale price
-        this.salesRepository.findBySaleDescription(salesEntity.getSaleDescription()).ifPresent((sale) -> {throw new SaleFoundException();});
+        salesEntity.setItemsAndCalculateSalePrice(items);
+        salesEntity.setItemQuantity(salesEntity.getItemIds().size());
         return salesRepository.save(salesEntity);
     }
 
-    public SalesEntity update(UUID id, SalesEntity updatedSale) {
+    public SalesEntity updateasda(UUID id, SalesEntity updatedSale) {
         SalesEntity existingSale = salesRepository.findById(id)
             .orElseThrow(() -> new ItemNotFoundException("Venda não encontrada: " + id));
 
@@ -49,6 +51,31 @@ public class SalesServices {
         }
         if (updatedSale.getSalePrice() != null) {
             existingSale.setSalePrice(updatedSale.getSalePrice());
+        }
+
+        return salesRepository.save(existingSale);
+    }
+
+    public SalesEntity update(UUID id, SalesEntity updatedSale) {
+        SalesEntity existingSale = salesRepository.findById(id)
+            .orElseThrow(() -> new ItemNotFoundException("Venda não encontrada: " + id));
+
+        if (updatedSale.getSaleDescription() != null) {
+            existingSale.setSaleDescription(updatedSale.getSaleDescription());
+        }
+        
+        // Assuming updatedSale contains updated item IDs or we directly use newItemIds parameter
+        if (updatedSale.getItemIds() != null && !updatedSale.getItemIds().isEmpty()) {
+            List<ItensEntity> items = updatedSale.getItemIds().stream()
+                .map(itemId -> itensRepository.findById(itemId)
+                    .orElseThrow(() -> new RuntimeException("Item not found: " + itemId)))
+                .collect(Collectors.toList());
+            existingSale.setItemQuantity(updatedSale.getItemIds().size());
+            existingSale.setItemsAndCalculateSalePrice(items);
+        }
+
+        if (updatedSale.getItemQuantity() != null) {
+            existingSale.setItemQuantity(updatedSale.getItemQuantity());
         }
 
         return salesRepository.save(existingSale);

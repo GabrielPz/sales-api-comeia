@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,7 +22,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 // import jakarta.validation.constraints.Size;
 // import jakarta.validation.constraints.Email;
@@ -41,7 +41,6 @@ public class SalesEntity {
     @Length(min = 10, max = 200, message = "A descrição precis conter entre 10 e 200 carcateres")
     private String saleDescription;
 
-    @NotNull(message = "O campo id não pode ser nulo.")
     private Integer itemQuantity;
 
     private String itemNames; 
@@ -51,6 +50,9 @@ public class SalesEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
     public void setItemsAndCalculateSalePrice(List<ItensEntity> items) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -58,6 +60,7 @@ public class SalesEntity {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error processing item names", e);
         }
+
         this.salePrice = BigDecimal.ZERO;
         for (ItensEntity item : items) {
             this.salePrice = this.salePrice.add(item.getPrice());
