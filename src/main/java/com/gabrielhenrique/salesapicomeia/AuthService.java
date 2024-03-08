@@ -1,5 +1,4 @@
 package com.gabrielhenrique.salesapicomeia;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -12,11 +11,11 @@ public class AuthService {
 
     private final RestTemplate restTemplate;
 
-    @Autowired
     public AuthService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
+    @SuppressWarnings("rawtypes")
     public ResponseEntity<Map> authenticate(String username, String password) {
         String tokenUrl = "http://localhost:8080/realms/SalesApi/protocol/openid-connect/token";
 

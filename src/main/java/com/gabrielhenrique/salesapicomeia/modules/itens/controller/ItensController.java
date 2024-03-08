@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gabrielhenrique.salesapicomeia.exceptions.ItemFoundException;
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemNotFoundException;
 import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
 import com.gabrielhenrique.salesapicomeia.modules.itens.services.ItemService;
@@ -45,7 +44,9 @@ public class ItensController {
     private ListItensService listItensService;
 
     @Tag(name = "Item", description = "Criar item")
-    @Operation(summary = "Criação de um item no banco de dados", description = "Cria um Item")
+    @Operation(
+        summary = "Criação de um item no banco de dados", 
+        description = "Cria um Item")
     @PostMapping("/create")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Item criado com sucesso", content = {
@@ -63,6 +64,15 @@ public class ItensController {
         }
     }
 
+    @Tag(name = "Item", description = "Atualizar item")
+    @Operation(summary = "Atualização de um item no banco de dados", description = "Atualiza um Item")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Item atualizado com sucesso", content = {
+            @Content(schema = @Schema(implementation = ItensEntity.class))
+        }),
+        @ApiResponse(responseCode = "404", description = "Item não encontrado", content = @Content(schema = @Schema(type = "string")))
+    })
+    @SecurityRequirement(name = "jwt_auth")
     @PatchMapping("/update/{id}")
     public ResponseEntity<Object> patchUpdate(@PathVariable UUID id, @Valid @RequestBody ItensEntity itensEntity) {
         try {
