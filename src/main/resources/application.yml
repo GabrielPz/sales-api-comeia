@@ -1,9 +1,20 @@
 spring:
+# Aqui é onde é realizada a configuração dor esourcesever de segurança
     security:
         oauth2:
             resourceserver:
                 jwt:
                     issuer-uri: http://localhost:8080/realms/SalesApi
                     jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+    # Conexão com o banco de dados
+    datasource:
+        url: jdbc:postgresql://localhost:5432/sales_comeia
+        username: admin
+        password: admin
+    # Opção que habilita a atualização automatica das tabelas pelo spring
+    jpa:
+        hibernate:
+            ddl-auto: update
 server:
     port: 8081
+
