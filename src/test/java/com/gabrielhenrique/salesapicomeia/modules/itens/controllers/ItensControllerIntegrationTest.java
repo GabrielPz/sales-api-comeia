@@ -1,7 +1,7 @@
 package com.gabrielhenrique.salesapicomeia.modules.itens.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
+import com.gabrielhenrique.salesapicomeia.modules.itens.dto.ItemCreateDTO;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +36,9 @@ public class ItensControllerIntegrationTest {
 
     @Test
     public void createItem_success() throws Exception {
-        ItensEntity newItem = new ItensEntity();
+        ItemCreateDTO newItem = new ItemCreateDTO();
         newItem.setName("Test Item");
-        newItem.setPrice(new BigDecimal("100.00"));
+        newItem.setPrice(new BigDecimal(100.00));
 
         ObjectMapper objectMapper = new ObjectMapper();
         String newItemJson = objectMapper.writeValueAsString(newItem);
