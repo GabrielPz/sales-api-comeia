@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemFoundException;
 import com.gabrielhenrique.salesapicomeia.exceptions.ItemNotFoundException;
+import com.gabrielhenrique.salesapicomeia.modules.itens.dto.ItemUpdateDTO;
 import com.gabrielhenrique.salesapicomeia.modules.itens.entity.ItensEntity;
 import com.gabrielhenrique.salesapicomeia.modules.itens.repository.ItensRepository;
 
@@ -15,15 +16,15 @@ public class ItemService {
     @Autowired
     private ItensRepository itensRepository;
 
-    public ItensEntity update(UUID id, ItensEntity updatedItem) {
+    public ItensEntity update(UUID id, ItemUpdateDTO updatedItemDTO) {
         ItensEntity existingItem = itensRepository.findById(id)
             .orElseThrow(() -> new ItemNotFoundException("Item não encontrado: " + id));
 
-        if (updatedItem.getName() != null) {
-            existingItem.setName(updatedItem.getName());
+        if (updatedItemDTO.getName() != null) {
+            existingItem.setName(updatedItemDTO.getName());
         }
-        if (updatedItem.getPrice() != null) {
-            existingItem.setPrice(updatedItem.getPrice());
+        if (updatedItemDTO.getPrice() != null) {
+            existingItem.setPrice(updatedItemDTO.getPrice());
         }
 
         return itensRepository.save(existingItem);
