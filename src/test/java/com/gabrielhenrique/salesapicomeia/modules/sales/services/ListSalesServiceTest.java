@@ -38,7 +38,7 @@ public class ListSalesServiceTest {
 
     @Test
     @DisplayName("Should list all sales")
-    public void shouldListAllSales() {
+    public void listAllSales() {
         when(salesRepository.findAll()).thenReturn(Arrays.asList(sale));
 
         List<SalesEntity> sales = listSalesService.listAllSales();
@@ -50,7 +50,7 @@ public class ListSalesServiceTest {
 
     @Test
     @DisplayName("Should find sale by id")
-    public void shouldFindSaleById() {
+    public void findSaleById() {
         UUID id = UUID.randomUUID();
         when(salesRepository.findById(id)).thenReturn(Optional.of(sale));
 
@@ -63,7 +63,7 @@ public class ListSalesServiceTest {
 
     @Test
     @DisplayName("Should return an empty list when no sales are found")
-    public void shouldReturnEmptyListWhenNoSalesFound() {
+    public void returnEmptyListWhenNoSalesFound() {
         when(salesRepository.findAll()).thenReturn(Arrays.asList());
 
         List<SalesEntity> sales = listSalesService.listAllSales();
@@ -74,7 +74,7 @@ public class ListSalesServiceTest {
 
     @Test
     @DisplayName("Should return empty Optional when sale by ID is not found")
-    public void shouldReturnEmptyOptionalWhenSaleByIdNotFound() {
+    public void returnEmptyOptionalWhenSaleByIdNotFound() {
         UUID id = UUID.randomUUID();
         when(salesRepository.findById(id)).thenReturn(Optional.empty());
 

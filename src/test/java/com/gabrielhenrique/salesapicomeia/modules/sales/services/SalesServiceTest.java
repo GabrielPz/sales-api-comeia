@@ -64,7 +64,7 @@ public class SalesServiceTest {
 
     @Test
     @DisplayName("Should create a new sale successfully")
-    public void shouldCreateNewSaleSuccessfully() {
+    public void createNewSaleSuccessfully() {
         when(salesRepository.findBySaleDescription(anyString())).thenReturn(Optional.empty());
         when(itensRepository.findById(itemId1)).thenReturn(Optional.of(item1));
         when(itensRepository.findById(itemId2)).thenReturn(Optional.of(item2));
@@ -79,7 +79,7 @@ public class SalesServiceTest {
 
     @Test
     @DisplayName("Should throw SaleFoundException if sale description already exists")
-    public void shouldThrowSaleFoundExceptionIfDescriptionExists() {
+    public void throwSaleFoundExceptionIfDescriptionExists() {
         when(salesRepository.findBySaleDescription(anyString())).thenReturn(Optional.of(salesEntity));
 
         assertThrows(SaleFoundException.class, () -> salesServices.create(salesEntity));
@@ -87,7 +87,7 @@ public class SalesServiceTest {
 
     @Test
     @DisplayName("Should update an existing sale")
-    public void shouldUpdateExistingSale() {
+    public void updateExistingSale() {
         when(salesRepository.findById(saleId)).thenReturn(Optional.of(salesEntity));
         when(itensRepository.findById(itemId1)).thenReturn(Optional.of(item1));
         when(itensRepository.findById(itemId2)).thenReturn(Optional.of(item2));
@@ -105,7 +105,7 @@ public class SalesServiceTest {
 
     @Test
     @DisplayName("Should throw ItemNotFoundException if sale to update does not exist")
-    public void shouldThrowItemNotFoundExceptionWhenUpdateIfSaleDoesNotExist() {
+    public void throwItemNotFoundExceptionWhenUpdateIfSaleDoesNotExist() {
         when(salesRepository.findById(saleId)).thenReturn(Optional.empty());
 
         assertThrows(ItemNotFoundException.class, () -> salesServices.update(saleId, new SalesEntity()));
@@ -113,7 +113,7 @@ public class SalesServiceTest {
 
     @Test
     @DisplayName("Should delete an existing sale")
-    public void shouldDeleteExistingSale() {
+    public void deleteExistingSale() {
         when(salesRepository.existsById(saleId)).thenReturn(true);
 
         salesServices.deleteById(saleId);
@@ -123,7 +123,7 @@ public class SalesServiceTest {
 
     @Test
     @DisplayName("Should throw ItemNotFoundException if sale to delete does not exist")
-    public void shouldThrowItemNotFoundExceptionWhenDeleteIfSaleDoesNotExist() {
+    public void throwItemNotFoundExceptionWhenDeleteIfSaleDoesNotExist() {
         when(salesRepository.existsById(saleId)).thenReturn(false);
 
         assertThrows(ItemNotFoundException.class, () -> salesServices.deleteById(saleId));
