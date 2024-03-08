@@ -20,6 +20,10 @@ Ao criar uma venda, o sistema calcula automaticamente o preço total da venda, s
 ### Documentação da API com Swagger
 Para facilitar a utilização e o teste da API, a documentação interativa gerada pelo Swagger está disponível no caminho: /swagger-ui/index.html. Por meio dessa interface, usuários e desenvolvedores podem visualizar todas as rotas disponíveis, parâmetros necessários e os formatos de resposta esperados. Além disso, é possível realizar requisições diretamente pela interface do Swagger, facilitando testes e a integração com outras aplicações.
 
+Para realizar as chamadas nas rotas, primeiro realize a autenticação pela rota de autenticação e insira o "access_token" no campo authorize.
+
+![Modelo AUth](./authorizeImg.jpeg)
+
 ## Tecnologias Utilizadas
 - Spring Boot
 - JPA (Java Persistence API)
